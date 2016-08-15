@@ -1,0 +1,16 @@
+db : 
+  development : 
+    host : "localhost"
+    password : ""
+    username : "root"
+    database : "mmr2"
+  testing :
+    host : "localhost"
+    password : "test"
+    username : "test"
+    database : "mmr2"
+  production :
+    host : "localhost"
+    password : "supersecret"
+    username : "root"
+    database : "mmr2"
