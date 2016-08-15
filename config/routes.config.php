@@ -15,8 +15,5 @@
 
   $router->get('user/simulate/:p1/:p2', 'user#simulate');
 
-  //PAGE SERVER
-  header("Content-Type: html");
-
   $router->run();
 ?>
