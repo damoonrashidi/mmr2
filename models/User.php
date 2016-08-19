@@ -51,10 +51,15 @@
       return 1/(1 + pow(10, ($opponent->points - $this->points)/400));
     }
 
+    function bounty() {
+      $wins = $this->consecutive_wins();
+      return $wins < 3 ? 0 : $wins * 1.5;
+    }
+
     function adjustMMR(User $opponent, bool $win) {
       $adjustment = $win ? 1 : 0;
       $diff = $this->points - $opponent->points;
-      $adjusted = $this->points + MMR::$K * ($adjustment - $this->expected($opponent));
+      $adjusted = $this->points + MMR::$K * ($adjustment - $this->expected($opponent)) + $this->bounty() + $opponent->bounty();
       return round($adjusted);
     }
 

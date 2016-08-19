@@ -12,6 +12,9 @@
       $ar = new ArrayManip();
       $this->created_at = date("Y-m-d H:i:s");
       $this->modified_at = date("Y-m-d H:i:s");
+      if ($this->id !== null && $this->id !== "") {
+        return $this->update();
+      }
       $rows = $ar->listify(array_keys($ar->without($this,['id'])));
       $values = $ar->listify(array_values($ar->without($this, ['id'])), "'");
       $q = "INSERT INTO ".static::$table." ($rows) VALUES($values)";

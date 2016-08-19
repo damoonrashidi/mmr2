@@ -119,6 +119,12 @@
       return $this->bucket;
     }
 
+    function delete() {
+      for($i = 0; $i < count($this->bucket); $i++) {
+        $this->bucket[$i]->delete();
+      }
+    }
+
 
     /**
      * filter: fn -> Resource

@@ -56,33 +56,16 @@
       echo $this->user->history()->json();
     }
 
-    function simulate($params) {
-      $p1 = User::where(['username' => $params->p1]);
-      $p2 = User::where(['username' => $params->p2]);
-      if ($p1 == null || $p2 == null) {
-        Controller::respond(['success' => false, status_code => 412, 'message' => 'Could not found one of the users']);
-        return;
-      }
-      $p1 = $p1->first();
-      $p2 = $p2->first();
-      Controller::respond([
-        $p1->username." wins" => [
-          $p1->username => $p1->adjustMMR($p2, true),
-          $p2->username => $p2->adjustMMR($p1, false),
-        ],
-        $p2->username." wins" => [
-          $p1->username => $p1->adjustMMR($p2, false),
-          $p2->username => $p2->adjustMMR($p1, true),
-        ]
-      ]);
-    }
-
     function wins($params) {
       Controller::respond(['consecutive_wins' => $this->user->consecutive_wins()]);
     }
 
     function teams($params) {
       $this->user->teams();
+    }
+
+    function list() {
+      echo User::all()->map(function($user) { return ['id' => $user->id, 'username' => $user->username, 'points' => $user->points, 'bounty' => $user->bounty()]; } )->json();
     }
 
 

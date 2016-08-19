@@ -6,6 +6,10 @@
       $this->layout = "";
     }
 
+    function __before($params, $action) {
+      header("Content-Type: application/json");
+    }
+
     function register($params) {
       $winner = User::where(['username' => $params->winner]);
       $loser = User::where(['username' => $params->loser]);
@@ -36,6 +40,27 @@
 
     function history() {
       echo SinglesHistory::all()->reverse()->json();
+    }
+
+    function simulate($params) {
+      $p1 = User::where(['username' => $params->p1]);
+      $p2 = User::where(['username' => $params->p2]);
+      if ($p1 == null || $p2 == null) {
+        Controller::respond(['success' => false, 'status_code' => 412, 'message' => 'Could not found one of the users']);
+        return;
+      }
+      $p1 = $p1->first();
+      $p2 = $p2->first();
+      Controller::respond([
+        $p1->username." wins" => [
+          $p1->username => $p1->adjustMMR($p2, true),
+          $p2->username => $p2->adjustMMR($p1, false),
+        ],
+        $p2->username." wins" => [
+          $p1->username => $p1->adjustMMR($p2, false),
+          $p2->username => $p2->adjustMMR($p1, true),
+        ]
+      ]);
     }
 
 
