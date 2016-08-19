@@ -3,7 +3,6 @@
   $router = new Router();
 
   //API
-  header("Content-Type: application/json");
   $router->post('user/register', 'user#register');
   $router->get('user/history/:username', 'user#history');
   $router->get('user/teams', 'user#teams');

@@ -7,16 +7,24 @@
     }
 
     function __before($params, $action) {
+      header("Content-Type: application/json");
+      if ($action == 'register') {
+        return;
+      }
       $found_user = true;
       if(isset($params->username)) {
-        $found_user = User::where(['username' => $params->username]) !== null;
+        $found_user = User::where(['username' => $params->username]);
+        if ($found_user !== null) {
+          $found_user = $found_user->first();
+        }
       } else if (isset($params->id)) {
-        $found_user = User::find($params->id) !== null;
+        $found_user = User::find($params->id);
       }
-
-      if (!$found_user) {
+      if ($found_user === null) {
         Controller::respond(['success' => false, 'status_code' => 412, 'message' => 'Could not find user']);
         exit;
+      } else {
+        $this->user = $found_user;
       }
     }
 
@@ -34,20 +42,18 @@
     }
 
     function profile($params) {
-      $user = User::where(['username' => $params->username])->first();
       Controller::respond([
-        'username' => $user->username,
-        'points' => $user->points,
-        'consecutive wins' => $user->consecutive_wins(),
-        'games' => $user->history()->to_array(),
-        'losses' => $user->losses(),
-        'wins' => $user->wins()
+        'username' => $this->user->username,
+        'points' => $this->user->points,
+        'consecutive wins' => $this->user->consecutive_wins(),
+        'games' => $this->user->history()->to_array(),
+        'losses' => $this->user->losses(),
+        'wins' => $this->user->wins()
       ]);
     }
 
     function history($params) {
-      $user = User::where(['username' => $params->username])->first();
-      echo $user->history()->json();
+      echo $this->user->history()->json();
     }
 
     function simulate($params) {
@@ -72,8 +78,11 @@
     }
 
     function wins($params) {
-      $wins = User::where(['username' => $params->username])->first()->wins();
-      Controller::respond(['wins' => $wins]);
+      Controller::respond(['consecutive_wins' => $this->user->consecutive_wins()]);
+    }
+
+    function teams($params) {
+      $this->user->teams();
     }
 
 

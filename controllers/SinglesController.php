@@ -22,7 +22,7 @@
       $loser_mmr = $loser->adjustMMR($winner, false);
       
       $winner->points = $winner_mmr;
-      $loser->points = $loser->mmr;
+      $loser->points = $loser_mmr;
       
       $winner->save();
       $loser->save();

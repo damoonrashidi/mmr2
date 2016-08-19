@@ -66,7 +66,7 @@
       $consecutive = 0;
       $stop = false;
       $games->reverse()->each(function($game) use (&$consecutive, &$stop){
-        if ($game->winner != $this->id || !$stop) {
+        if ($game->winner != $this->id || $stop) {
           $stop = true;
           return;
         } else {
