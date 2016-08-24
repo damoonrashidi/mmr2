@@ -24,6 +24,9 @@
       
       $winner_mmr = $winner->adjustMMR($loser, true);
       $loser_mmr = $loser->adjustMMR($winner, false);
+
+      $winner_delta = $winner_mmr - $winner->points;
+      $loser_delta = $loser_mmr - $loser->points;
       
       $winner->points = $winner_mmr;
       $loser->points = $loser_mmr;
@@ -33,7 +36,9 @@
 
       $s = new SinglesHistory([
         'winner' => $winner->id,
-        'loser' => $loser->id
+        'loser' => $loser->id,
+        'winner_delta' => $winner_delta,
+        'loser_delta' => $loser_delta
       ]);
       $s->save();
     }
