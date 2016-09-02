@@ -31,5 +31,10 @@
   $router->get('singles/simulate/:p1/:p2', 'singles#simulate');
 
 
+  /**
+   * The web interface part
+   */
+  $router->index("app#index");
+
   $router->run();
 ?>

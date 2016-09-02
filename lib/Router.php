@@ -12,6 +12,10 @@ class Router
         $this->method = $_SERVER['REQUEST_METHOD'];
     }
 
+    public function index(string $controller) {
+        $this->index = $controller;
+    }
+
     /**
      * @param  string
      * @param  mixed

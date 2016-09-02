@@ -35,11 +35,11 @@ gulp.task 'coffee', ->
     .pipe browsersync.stream()
 
 gulp.task 'serve', ->
-  browsersync.init {server: {proxy: 'http://localhost:1338'}}
+  browsersync.init {server: {proxy: 'localhost:1338'}}
   gulp.watch [DIR.CSS.IN+"*.sass", DIR.CSS.IN+"**/*.sass"], ['sass']
   gulp.watch [DIR.JS.APP], ['coffee']
   gulp.watch("*.html").on('change', browsersync.reload)
   return
 
 
-gulp.task 'default', ['sass', 'coffee', 'serve']
+gulp.task 'default', ['serve']

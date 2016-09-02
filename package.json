@@ -1,10 +1,12 @@
 {
-  "author" : "My Name",
-  "email" : "me@mail.com",
-  "description" : "package description",
-  "dependencies" : {
+  "author": "My Name",
+  "email": "me@mail.com",
+  "description": "package description",
+  "dependencies": {
+    "angular": "^1.5.8",
+    "angular-route": "^1.5.8"
   },
-  "devDependencies" : {
+  "devDependencies": {
     "coffee-script": "latest",
     "gulp": "latest",
     "gulp-sass": "latest",
