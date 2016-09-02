@@ -41,9 +41,12 @@ class Router
         $this->delete[$url] = $controller;
     }
 
-    public function parse_params($url)
+    public function unify_params()
     {
-        return [];
+        $params = $_POST;
+        $params = array_merge($_GET, $params);
+        $params = array_merge($params, (array) json_decode(file_get_contents('php://input')));
+        return (object)$params;
     }
 
     public function run()
@@ -51,16 +54,13 @@ class Router
         $routes = ['GET' => $this->get, 'POST' => $this->post, 'DELETE' => $this->delete, 'PUT' => $this->put][$this->method];
         $url = substr($this->uri, 1);
       //this is the index. do the index action
+        $params = $this->unify_params();
         if ($url == '' && $this->index != null) {
             if (is_callable($this->index)) {
                 $fn = $this->index;
                 $fn();
                 return;
             } else {
-                $params = $this->parse_params($url);
-                if ($this->method == 'POST' || $this->method == 'PUT') {
-                    $params = json_decode(file_get_contents('php://input'));
-                }
                 $controller = ucfirst(explode('#', $this->index)[0]).'Controller';
                 $action = explode('#', $this->index)[1];
                 require __DIR__.'/../controllers/'.$controller.'.php';
@@ -74,17 +74,9 @@ class Router
         }
       //we straight up matched a route, check to see if its callable or if it's a controller
         if (isset($routes[$url])) {
-            $params = $this->parse_params($routes[$url]);
-            if ($this->method == 'POST' || $this->method == 'PUT') {
-                $params = json_decode(file_get_contents('php://input'));
-            }
             if (is_callable($routes[$url])) {
                 $routes[$url]($params);
             } else {
-                $params = $this->parse_params($routes[$url]);
-                if ($this->method == 'POST' || $this->method == 'PUT') {
-                    $params = json_decode(file_get_contents('php://input'));
-                }
                 $controller = ucfirst(explode('#', $routes[$url])[0]).'Controller';
                 $action = explode('#', $routes[$url])[1];
                 require __DIR__.'/../controllers/'.$controller.'.php';
@@ -110,18 +102,15 @@ class Router
                             $params[substr($route[$i], 1, strlen($route[$i]) - 1)] = $url[$i];
                         }
                         if ($i == count($route) - 1 && $match) {
-                            if ($this->method == 'POST') {
-                                $params = array_merge($params, json_decode(file_get_contents('php://input')), true);
-                                $params = array_merge($params, $_POST, true);
-                            }
                             if(is_callable($controller)){
+                              $params = (object)$params;
                               $controller($params);
                               return;
                             }
                             $action = explode('#', $controller)[1];
-                            $params = (object) $params;
                             $controller = ucfirst(explode('#', $controller)[0]).'Controller';
                             require __DIR__.'/../controllers/'.$controller.'.php';
+                            $params = (object)$params;
                             $controller = new $controller();
                             $controller->__before($params, $action);
                             $controller->$action($params);

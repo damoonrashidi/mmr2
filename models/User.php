@@ -30,7 +30,7 @@
 
     function history() {
       $history = SinglesHistory::where(['winner' => $this->id, 'loser' => $this->id], "OR");
-      return $history === null ? [] : $history;
+      return $history === null ? new Resource([]) : $history;
     }
 
     function wins() {
