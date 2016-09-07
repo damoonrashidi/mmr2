@@ -30,6 +30,23 @@
   $router->get('singles/history', 'singles#history');
   $router->get('singles/simulate/:p1/:p2', 'singles#simulate');
 
+  $router->get('help', function() {
+    header("Content-Type: application/json");
+    echo json_encode([
+      'GET' => [
+        'user/history/:username' => 'list of games for :username',
+        'user/teams/:username' => 'list of teams :username belongs to',
+        'user/list' => 'list of all users and their points',
+        'user/wins/:username' => 'number of consecutive wins for :username',
+        'user/profile/:username' => 'information about :username'
+      ],
+      'POST' => [
+        'user/register' => ['username' => 'string'],
+        'singles/register' => ['winner' => 'string', 'loser' => 'string']
+      ]
+    ]);
+  });
+
 
   /**
    * The web interface part

@@ -17,7 +17,7 @@
       'html' => 'text/html',
       'svg' => 'image/svg+xml'
     ];
-    $ext = explode(".", $res)[1];
+    $ext = explode(".", $res)[count(explode(".", $res))-1];
     header("Content-Type: ".$mimes[$ext]);
     echo file_get_contents($res);
     exit;
