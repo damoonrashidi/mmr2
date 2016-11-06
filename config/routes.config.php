@@ -47,6 +47,8 @@
     ]);
   });
 
+  $router->get('data/bar', 'data#bar');
+
 
   /**
    * The web interface part
