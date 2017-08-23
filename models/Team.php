@@ -1,31 +1,35 @@
 <?php
-  /**
-   * Team - Description 
-   * extended description
-   **/
-  class Team extends Model {
+/**
+ * Team - Description
+ * extended description
+ **/
 
-    //database table for this model
-    static $table = "team";
+class Team extends Model {
 
-    function __construct($data = []) {
-      $options = ['id', 'created_at', 'modified_at', 'name', 'points', 'captain', 'mate'];
-      foreach($options as $key) {
-        $data[$key] = isset($data[$key]) ? $data[$key] : null;
-      }
+  //database table for this model
+  static $table = "team";
+  static $has_one = [
+    'captain' => 'User',
+    'mate' => 'User',
+  ];
+  static $validate = [
+    'points' => 'Validate::positive',
+  ];
 
-      $this->id = $data['id'];
-      $this->created_at = $data['created_at'];
-      $this->modified_at = $data['modified_at'];
-      $this->name = $data['name'];
-      $this->points = $data['points'];
-      $this->captain = $data['captain'];
-      $this->mate = $data['mate'];
+  public $id = null;
+  public $created_at = null;
+  public $modified_at = null;
+  public $name = null;
+  public $points = null;
+  public $captain = null;
+  public $mate = null;
 
-      
-      return $this;
+  public function __construct($data = []) {
+    foreach ($data as $k => $v) {
+      $this->$k = $v;
     }
 
+    return $this;
   }
 
-?>
+}

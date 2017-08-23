@@ -3,20 +3,7 @@
   "email": "me@mail.com",
   "description": "package description",
   "dependencies": {
-    "angular": "^1.5.8",
-    "angular-route": "^1.5.8"
   },
   "devDependencies": {
-    "coffee-script": "latest",
-    "gulp": "latest",
-    "gulp-sass": "latest",
-    "gulp-coffee": "latest",
-    "gulp-concat": "latest",
-    "gulp-chmod": "latest",
-    "gulp-autoprefixer": "latest",
-    "gulp-minify-html": "latest",
-    "gulp-minify-css": "latest",
-    "gulp-uglify": "latest",
-    "browser-sync": "latest"
   }
 }

@@ -1,31 +1,35 @@
 <?php
-  /**
-   * Singleshistory - Description 
-   * extended description
-   **/
-  class SinglesHistory extends Model {
+/**
+ * Singleshistory - Description
+ * extended description
+ **/
+class SinglesHistory extends Model {
 
-    //database table for this model
-    static $table = "singleshistory";
+  //database table for this model
+  static $table = "singleshistory";
+  static $has_one = [
+    'winner' => 'User',
+    'loser' => 'User',
+  ];
+  static $validate = [
+    'delta_winner' => 'Validate::positive',
+    'delta_loser' => 'Validate::negative',
+  ];
 
-    function __construct($data = []) {
-      $options = ['id', 'created_at', 'modified_at', 'winner', 'loser', 'delta_winner', 'delta_loser'];
-      foreach($options as $key) {
-        $data[$key] = isset($data[$key]) ? $data[$key] : "";
-      }
+  public $id = null;
+  public $created_at = null;
+  public $modified_at = null;
+  public $winner = null;
+  public $loser = null;
+  public $delta_winner = null;
+  public $delta_loser = null;
 
-      $this->id = $data['id'];
-      $this->created_at = $data['created_at'];
-      $this->modified_at = $data['modified_at'];
-      $this->winner = $data['winner'];
-      $this->loser = $data['loser'];
-      $this->delta_winner = $data['delta_winner'];
-      $this->delta_loser = $data['delta_loser'];
-
-      
-      return $this;
+  public function __construct($data = []) {
+    foreach ($data as $key => $val) {
+      $this->$key = $val;
     }
 
+    return $this;
   }
 
-?>
+}
